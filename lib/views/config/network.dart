@@ -679,7 +679,10 @@ final networkItems = [
   if (system.isAndroid)
     ...generateSection(
       title: 'VPN',
-      items: [const AllowBypassItem(), const VpnSystemProxyItem()],
+      items: [
+        const AllowBypassItem(),
+        const VpnSystemProxyItem(),
+      ],
     ),
   if (system.isDesktop)
     ...generateSection(

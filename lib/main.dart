@@ -114,6 +114,39 @@ Future<void> _service(List<String> flags) async {
     final bootStart = flags.contains('boot');
     final clashLibHandler = ClashLibHandler();
     final smartAutoStopLock = Lock();
+    final localNetworkReloadLock = Lock();
+    Timer? localNetworkReloadTimer;
+
+    void reloadForLocalNetworkChange() {
+      localNetworkReloadTimer?.cancel();
+      localNetworkReloadTimer = Timer(const Duration(milliseconds: 350), () {
+        unawaited(
+          localNetworkReloadLock.synchronized(() async {
+            try {
+              final latestConfig = await preferences.getConfig(reload: true);
+              if (latestConfig == null) return;
+              globalState.config = latestConfig;
+              if (!latestConfig.networkProps.dynamicBypassLocalNetwork) return;
+              final isRunning = await vpn?.getStatus() ?? false;
+              if (!isRunning) return;
+              final params = await globalState.getSetupParams(
+                pathConfig: latestConfig.patchClashConfig.copyWith.tun(
+                  enable: false,
+                ),
+              );
+              final message = await clashLibHandler.setupConfig(params);
+              if (message.isNotEmpty) {
+                commonPrint.log(
+                  'Dynamic local network config reload failed: $message',
+                );
+              }
+            } catch (e) {
+              commonPrint.log('Dynamic local network reload failed: $e');
+            }
+          }),
+        );
+      });
+    }
 
     Future<void> checkSmartAutoStop() async {
       try {
@@ -131,9 +164,7 @@ Future<void> _service(List<String> flags) async {
           if (candidateIps.isEmpty && candidateGateways.isEmpty) return;
 
           final shouldStop =
-              candidateIps.any(
-                (ip) => NetworkMatcher.matchAny(ip, networks),
-              ) ||
+              candidateIps.any((ip) => NetworkMatcher.matchAny(ip, networks)) ||
               candidateGateways.any(
                 (gw) => NetworkMatcher.matchAnyGateway(gw, networks),
               );
@@ -180,6 +211,7 @@ Future<void> _service(List<String> flags) async {
           clashLibHandler.updateDns(dns);
         },
         onNetworkChanged: checkSmartAutoStop,
+        onLocalNetworkChanged: reloadForLocalNetworkChange,
       ),
     );
 
@@ -323,12 +355,15 @@ class _TileListenerWithService with TileListener {
 class _VpnListenerWithService with VpnListener {
   final Function(String dns) _onDnsChanged;
   final Function() _onNetworkChanged;
+  final Function() _onLocalNetworkChanged;
 
   const _VpnListenerWithService({
     required Function(String dns) onDnsChanged,
     required Function() onNetworkChanged,
-  })  : _onDnsChanged = onDnsChanged,
-        _onNetworkChanged = onNetworkChanged;
+    required Function() onLocalNetworkChanged,
+  }) : _onDnsChanged = onDnsChanged,
+       _onNetworkChanged = onNetworkChanged,
+       _onLocalNetworkChanged = onLocalNetworkChanged;
 
   @override
   void onDnsChanged(String dns) {
@@ -340,5 +375,11 @@ class _VpnListenerWithService with VpnListener {
   void onNetworkChanged() {
     super.onNetworkChanged();
     _onNetworkChanged();
+  }
+
+  @override
+  void onLocalNetworkChanged() {
+    super.onLocalNetworkChanged();
+    _onLocalNetworkChanged();
   }
 }

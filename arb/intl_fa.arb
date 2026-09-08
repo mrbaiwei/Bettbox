@@ -235,6 +235,8 @@
   "replaceAll": "جایگزینی همه",
   "allowBypass": "اجازه میانبر VPN",
   "allowBypassDesc": "اجازه به برخی برنامه‌ها برای عبور مستقیم بدون VPN",
+  "dynamicBypassLocalNetwork": "دور زدن پویای شبکه محلی",
+  "dynamicBypassLocalNetworkDesc": "هنگام تغییر شبکه، شبکه محلی را به‌صورت پویا به قوانین اتصال مستقیم اضافه می‌کند",
   "externalController": "کنترل خارجی",
   "externalControllerDesc": "کنترل هسته از طریق پورت آنلاین",
   "controlSecret": "رمز عبور کنترل",

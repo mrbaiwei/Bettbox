@@ -286,6 +286,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "dozeSuspendDesc": MessageLookupByLibrary.simpleMessage(
       "開啟後同步系統 Doze 休眠模式",
     ),
+    "dynamicBypassLocalNetwork": MessageLookupByLibrary.simpleMessage(
+      "動態繞過本地網路",
+    ),
+    "dynamicBypassLocalNetworkDesc": MessageLookupByLibrary.simpleMessage(
+      "網路變更時動態將本地網路加入直連規則",
+    ),
     "edit": MessageLookupByLibrary.simpleMessage("編輯"),
     "editTunnel": MessageLookupByLibrary.simpleMessage("編輯轉發"),
     "emptyTip": m3,

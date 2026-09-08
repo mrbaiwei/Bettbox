@@ -410,6 +410,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "dozeSuspendDesc": MessageLookupByLibrary.simpleMessage(
       "Синхронизация с режимом сна Android",
     ),
+    "dynamicBypassLocalNetwork": MessageLookupByLibrary.simpleMessage(
+      "Динамический обход локальной сети",
+    ),
+    "dynamicBypassLocalNetworkDesc": MessageLookupByLibrary.simpleMessage(
+      "Динамически добавлять локальную сеть в правила прямого подключения при изменении сети",
+    ),
     "edit": MessageLookupByLibrary.simpleMessage("Редактировать"),
     "editTunnel": MessageLookupByLibrary.simpleMessage(
       "Изменить перенаправление",

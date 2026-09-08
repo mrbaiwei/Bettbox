@@ -235,6 +235,8 @@
   "replaceAll": "모두 바꾸기",
   "allowBypass": "VPN 우회 허용",
   "allowBypassDesc": "특정 앱의 VPN 우회 연결 허용",
+  "dynamicBypassLocalNetwork": "로컬 네트워크 동적 우회",
+  "dynamicBypassLocalNetworkDesc": "네트워크 변경 시 로컬 네트워크를 DIRECT 규칙에 동적으로 추가합니다",
   "externalController": "외부 제어",
   "externalControllerDesc": "온라인 포트를 통해 코어 제어",
   "controlSecret": "제어 비밀번호",

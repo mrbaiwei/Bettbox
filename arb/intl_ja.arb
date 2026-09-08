@@ -235,6 +235,8 @@
   "replaceAll": "すべて置換",
   "allowBypass": "VPN迂回を許可",
   "allowBypassDesc": "特定アプリのVPN迂回接続を許可",
+  "dynamicBypassLocalNetwork": "ローカルネットワークの動的バイパス",
+  "dynamicBypassLocalNetworkDesc": "ネットワーク変更時にローカルネットワークをDIRECTルールへ動的に追加します",
   "externalController": "外部制御",
   "externalControllerDesc": "オンラインポート経由でカーネルを制御",
   "controlSecret": "制御パスワード",

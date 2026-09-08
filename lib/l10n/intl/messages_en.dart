@@ -403,6 +403,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "dozeSuspendDesc": MessageLookupByLibrary.simpleMessage(
       "Sync with system Doze mode",
     ),
+    "dynamicBypassLocalNetwork": MessageLookupByLibrary.simpleMessage(
+      "Dynamic Local Network Bypass",
+    ),
+    "dynamicBypassLocalNetworkDesc": MessageLookupByLibrary.simpleMessage(
+      "Dynamically add the local network to DIRECT rules when the network changes",
+    ),
     "edit": MessageLookupByLibrary.simpleMessage("Edit"),
     "editTunnel": MessageLookupByLibrary.simpleMessage("Edit Forwarding"),
     "emptyTip": m3,

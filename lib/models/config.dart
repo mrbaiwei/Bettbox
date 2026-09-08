@@ -258,6 +258,7 @@ abstract class NetworkProps with _$NetworkProps {
     @Default(true) bool bypassPrivateRoute,
     @Default([]) List<String> bypassPrivateRouteAddress,
     @Default(true) bool autoSetSystemDns,
+    @Default(true) bool dynamicBypassLocalNetwork,
   }) = _NetworkProps;
 
   factory NetworkProps.fromJson(Map<String, Object?>? json) =>

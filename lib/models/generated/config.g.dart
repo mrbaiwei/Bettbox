@@ -263,6 +263,8 @@ _NetworkProps _$NetworkPropsFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const [],
       autoSetSystemDns: json['autoSetSystemDns'] as bool? ?? true,
+      dynamicBypassLocalNetwork:
+          json['dynamicBypassLocalNetwork'] as bool? ?? true,
     );
 
 Map<String, dynamic> _$NetworkPropsToJson(_NetworkProps instance) =>
@@ -272,6 +274,7 @@ Map<String, dynamic> _$NetworkPropsToJson(_NetworkProps instance) =>
       'bypassPrivateRoute': instance.bypassPrivateRoute,
       'bypassPrivateRouteAddress': instance.bypassPrivateRouteAddress,
       'autoSetSystemDns': instance.autoSetSystemDns,
+      'dynamicBypassLocalNetwork': instance.dynamicBypassLocalNetwork,
     };
 
 _ProxiesStyle _$ProxiesStyleFromJson(Map<String, dynamic> json) =>

@@ -320,6 +320,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "dozeSuspendDesc": MessageLookupByLibrary.simpleMessage(
       "OSのDozeスリープモードに同期",
     ),
+    "dynamicBypassLocalNetwork": MessageLookupByLibrary.simpleMessage(
+      "ローカルネットワークの動的バイパス",
+    ),
+    "dynamicBypassLocalNetworkDesc": MessageLookupByLibrary.simpleMessage(
+      "ネットワーク変更時にローカルネットワークをDIRECTルールへ動的に追加します",
+    ),
     "edit": MessageLookupByLibrary.simpleMessage("編集"),
     "editTunnel": MessageLookupByLibrary.simpleMessage("転送編集"),
     "emptyTip": m3,

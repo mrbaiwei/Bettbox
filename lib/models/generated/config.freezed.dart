@@ -1277,7 +1277,7 @@ $AccessControlCopyWith<$Res> get accessControl {
 /// @nodoc
 mixin _$NetworkProps {
 
- bool get systemProxy; List<String> get bypassDomain; bool get bypassPrivateRoute; List<String> get bypassPrivateRouteAddress; bool get autoSetSystemDns;
+ bool get systemProxy; List<String> get bypassDomain; bool get bypassPrivateRoute; List<String> get bypassPrivateRouteAddress; bool get autoSetSystemDns; bool get dynamicBypassLocalNetwork;
 /// Create a copy of NetworkProps
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1290,16 +1290,16 @@ $NetworkPropsCopyWith<NetworkProps> get copyWith => _$NetworkPropsCopyWithImpl<N
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NetworkProps&&(identical(other.systemProxy, systemProxy) || other.systemProxy == systemProxy)&&const DeepCollectionEquality().equals(other.bypassDomain, bypassDomain)&&(identical(other.bypassPrivateRoute, bypassPrivateRoute) || other.bypassPrivateRoute == bypassPrivateRoute)&&const DeepCollectionEquality().equals(other.bypassPrivateRouteAddress, bypassPrivateRouteAddress)&&(identical(other.autoSetSystemDns, autoSetSystemDns) || other.autoSetSystemDns == autoSetSystemDns));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NetworkProps&&(identical(other.systemProxy, systemProxy) || other.systemProxy == systemProxy)&&const DeepCollectionEquality().equals(other.bypassDomain, bypassDomain)&&(identical(other.bypassPrivateRoute, bypassPrivateRoute) || other.bypassPrivateRoute == bypassPrivateRoute)&&const DeepCollectionEquality().equals(other.bypassPrivateRouteAddress, bypassPrivateRouteAddress)&&(identical(other.autoSetSystemDns, autoSetSystemDns) || other.autoSetSystemDns == autoSetSystemDns)&&(identical(other.dynamicBypassLocalNetwork, dynamicBypassLocalNetwork) || other.dynamicBypassLocalNetwork == dynamicBypassLocalNetwork));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,systemProxy,const DeepCollectionEquality().hash(bypassDomain),bypassPrivateRoute,const DeepCollectionEquality().hash(bypassPrivateRouteAddress),autoSetSystemDns);
+int get hashCode => Object.hash(runtimeType,systemProxy,const DeepCollectionEquality().hash(bypassDomain),bypassPrivateRoute,const DeepCollectionEquality().hash(bypassPrivateRouteAddress),autoSetSystemDns,dynamicBypassLocalNetwork);
 
 @override
 String toString() {
-  return 'NetworkProps(systemProxy: $systemProxy, bypassDomain: $bypassDomain, bypassPrivateRoute: $bypassPrivateRoute, bypassPrivateRouteAddress: $bypassPrivateRouteAddress, autoSetSystemDns: $autoSetSystemDns)';
+  return 'NetworkProps(systemProxy: $systemProxy, bypassDomain: $bypassDomain, bypassPrivateRoute: $bypassPrivateRoute, bypassPrivateRouteAddress: $bypassPrivateRouteAddress, autoSetSystemDns: $autoSetSystemDns, dynamicBypassLocalNetwork: $dynamicBypassLocalNetwork)';
 }
 
 
@@ -1310,7 +1310,7 @@ abstract mixin class $NetworkPropsCopyWith<$Res>  {
   factory $NetworkPropsCopyWith(NetworkProps value, $Res Function(NetworkProps) _then) = _$NetworkPropsCopyWithImpl;
 @useResult
 $Res call({
- bool systemProxy, List<String> bypassDomain, bool bypassPrivateRoute, List<String> bypassPrivateRouteAddress, bool autoSetSystemDns
+ bool systemProxy, List<String> bypassDomain, bool bypassPrivateRoute, List<String> bypassPrivateRouteAddress, bool autoSetSystemDns, bool dynamicBypassLocalNetwork
 });
 
 
@@ -1327,13 +1327,14 @@ class _$NetworkPropsCopyWithImpl<$Res>
 
 /// Create a copy of NetworkProps
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? systemProxy = null,Object? bypassDomain = null,Object? bypassPrivateRoute = null,Object? bypassPrivateRouteAddress = null,Object? autoSetSystemDns = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? systemProxy = null,Object? bypassDomain = null,Object? bypassPrivateRoute = null,Object? bypassPrivateRouteAddress = null,Object? autoSetSystemDns = null,Object? dynamicBypassLocalNetwork = null,}) {
   return _then(_self.copyWith(
 systemProxy: null == systemProxy ? _self.systemProxy : systemProxy // ignore: cast_nullable_to_non_nullable
 as bool,bypassDomain: null == bypassDomain ? _self.bypassDomain : bypassDomain // ignore: cast_nullable_to_non_nullable
 as List<String>,bypassPrivateRoute: null == bypassPrivateRoute ? _self.bypassPrivateRoute : bypassPrivateRoute // ignore: cast_nullable_to_non_nullable
 as bool,bypassPrivateRouteAddress: null == bypassPrivateRouteAddress ? _self.bypassPrivateRouteAddress : bypassPrivateRouteAddress // ignore: cast_nullable_to_non_nullable
 as List<String>,autoSetSystemDns: null == autoSetSystemDns ? _self.autoSetSystemDns : autoSetSystemDns // ignore: cast_nullable_to_non_nullable
+as bool,dynamicBypassLocalNetwork: null == dynamicBypassLocalNetwork ? _self.dynamicBypassLocalNetwork : dynamicBypassLocalNetwork // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -1419,10 +1420,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool systemProxy,  List<String> bypassDomain,  bool bypassPrivateRoute,  List<String> bypassPrivateRouteAddress,  bool autoSetSystemDns)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool systemProxy,  List<String> bypassDomain,  bool bypassPrivateRoute,  List<String> bypassPrivateRouteAddress,  bool autoSetSystemDns,  bool dynamicBypassLocalNetwork)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NetworkProps() when $default != null:
-return $default(_that.systemProxy,_that.bypassDomain,_that.bypassPrivateRoute,_that.bypassPrivateRouteAddress,_that.autoSetSystemDns);case _:
+return $default(_that.systemProxy,_that.bypassDomain,_that.bypassPrivateRoute,_that.bypassPrivateRouteAddress,_that.autoSetSystemDns,_that.dynamicBypassLocalNetwork);case _:
   return orElse();
 
 }
@@ -1440,10 +1441,10 @@ return $default(_that.systemProxy,_that.bypassDomain,_that.bypassPrivateRoute,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool systemProxy,  List<String> bypassDomain,  bool bypassPrivateRoute,  List<String> bypassPrivateRouteAddress,  bool autoSetSystemDns)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool systemProxy,  List<String> bypassDomain,  bool bypassPrivateRoute,  List<String> bypassPrivateRouteAddress,  bool autoSetSystemDns,  bool dynamicBypassLocalNetwork)  $default,) {final _that = this;
 switch (_that) {
 case _NetworkProps():
-return $default(_that.systemProxy,_that.bypassDomain,_that.bypassPrivateRoute,_that.bypassPrivateRouteAddress,_that.autoSetSystemDns);case _:
+return $default(_that.systemProxy,_that.bypassDomain,_that.bypassPrivateRoute,_that.bypassPrivateRouteAddress,_that.autoSetSystemDns,_that.dynamicBypassLocalNetwork);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1460,10 +1461,10 @@ return $default(_that.systemProxy,_that.bypassDomain,_that.bypassPrivateRoute,_t
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool systemProxy,  List<String> bypassDomain,  bool bypassPrivateRoute,  List<String> bypassPrivateRouteAddress,  bool autoSetSystemDns)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool systemProxy,  List<String> bypassDomain,  bool bypassPrivateRoute,  List<String> bypassPrivateRouteAddress,  bool autoSetSystemDns,  bool dynamicBypassLocalNetwork)?  $default,) {final _that = this;
 switch (_that) {
 case _NetworkProps() when $default != null:
-return $default(_that.systemProxy,_that.bypassDomain,_that.bypassPrivateRoute,_that.bypassPrivateRouteAddress,_that.autoSetSystemDns);case _:
+return $default(_that.systemProxy,_that.bypassDomain,_that.bypassPrivateRoute,_that.bypassPrivateRouteAddress,_that.autoSetSystemDns,_that.dynamicBypassLocalNetwork);case _:
   return null;
 
 }
@@ -1475,7 +1476,7 @@ return $default(_that.systemProxy,_that.bypassDomain,_that.bypassPrivateRoute,_t
 @JsonSerializable()
 
 class _NetworkProps implements NetworkProps {
-  const _NetworkProps({this.systemProxy = false, final  List<String> bypassDomain = defaultBypassDomain, this.bypassPrivateRoute = true, final  List<String> bypassPrivateRouteAddress = const [], this.autoSetSystemDns = true}): _bypassDomain = bypassDomain,_bypassPrivateRouteAddress = bypassPrivateRouteAddress;
+  const _NetworkProps({this.systemProxy = false, final  List<String> bypassDomain = defaultBypassDomain, this.bypassPrivateRoute = true, final  List<String> bypassPrivateRouteAddress = const [], this.autoSetSystemDns = true, this.dynamicBypassLocalNetwork = true}): _bypassDomain = bypassDomain,_bypassPrivateRouteAddress = bypassPrivateRouteAddress;
   factory _NetworkProps.fromJson(Map<String, dynamic> json) => _$NetworkPropsFromJson(json);
 
 @override@JsonKey() final  bool systemProxy;
@@ -1495,6 +1496,7 @@ class _NetworkProps implements NetworkProps {
 }
 
 @override@JsonKey() final  bool autoSetSystemDns;
+@override@JsonKey() final  bool dynamicBypassLocalNetwork;
 
 /// Create a copy of NetworkProps
 /// with the given fields replaced by the non-null parameter values.
@@ -1509,16 +1511,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NetworkProps&&(identical(other.systemProxy, systemProxy) || other.systemProxy == systemProxy)&&const DeepCollectionEquality().equals(other._bypassDomain, _bypassDomain)&&(identical(other.bypassPrivateRoute, bypassPrivateRoute) || other.bypassPrivateRoute == bypassPrivateRoute)&&const DeepCollectionEquality().equals(other._bypassPrivateRouteAddress, _bypassPrivateRouteAddress)&&(identical(other.autoSetSystemDns, autoSetSystemDns) || other.autoSetSystemDns == autoSetSystemDns));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NetworkProps&&(identical(other.systemProxy, systemProxy) || other.systemProxy == systemProxy)&&const DeepCollectionEquality().equals(other._bypassDomain, _bypassDomain)&&(identical(other.bypassPrivateRoute, bypassPrivateRoute) || other.bypassPrivateRoute == bypassPrivateRoute)&&const DeepCollectionEquality().equals(other._bypassPrivateRouteAddress, _bypassPrivateRouteAddress)&&(identical(other.autoSetSystemDns, autoSetSystemDns) || other.autoSetSystemDns == autoSetSystemDns)&&(identical(other.dynamicBypassLocalNetwork, dynamicBypassLocalNetwork) || other.dynamicBypassLocalNetwork == dynamicBypassLocalNetwork));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,systemProxy,const DeepCollectionEquality().hash(_bypassDomain),bypassPrivateRoute,const DeepCollectionEquality().hash(_bypassPrivateRouteAddress),autoSetSystemDns);
+int get hashCode => Object.hash(runtimeType,systemProxy,const DeepCollectionEquality().hash(_bypassDomain),bypassPrivateRoute,const DeepCollectionEquality().hash(_bypassPrivateRouteAddress),autoSetSystemDns,dynamicBypassLocalNetwork);
 
 @override
 String toString() {
-  return 'NetworkProps(systemProxy: $systemProxy, bypassDomain: $bypassDomain, bypassPrivateRoute: $bypassPrivateRoute, bypassPrivateRouteAddress: $bypassPrivateRouteAddress, autoSetSystemDns: $autoSetSystemDns)';
+  return 'NetworkProps(systemProxy: $systemProxy, bypassDomain: $bypassDomain, bypassPrivateRoute: $bypassPrivateRoute, bypassPrivateRouteAddress: $bypassPrivateRouteAddress, autoSetSystemDns: $autoSetSystemDns, dynamicBypassLocalNetwork: $dynamicBypassLocalNetwork)';
 }
 
 
@@ -1529,7 +1531,7 @@ abstract mixin class _$NetworkPropsCopyWith<$Res> implements $NetworkPropsCopyWi
   factory _$NetworkPropsCopyWith(_NetworkProps value, $Res Function(_NetworkProps) _then) = __$NetworkPropsCopyWithImpl;
 @override @useResult
 $Res call({
- bool systemProxy, List<String> bypassDomain, bool bypassPrivateRoute, List<String> bypassPrivateRouteAddress, bool autoSetSystemDns
+ bool systemProxy, List<String> bypassDomain, bool bypassPrivateRoute, List<String> bypassPrivateRouteAddress, bool autoSetSystemDns, bool dynamicBypassLocalNetwork
 });
 
 
@@ -1546,13 +1548,14 @@ class __$NetworkPropsCopyWithImpl<$Res>
 
 /// Create a copy of NetworkProps
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? systemProxy = null,Object? bypassDomain = null,Object? bypassPrivateRoute = null,Object? bypassPrivateRouteAddress = null,Object? autoSetSystemDns = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? systemProxy = null,Object? bypassDomain = null,Object? bypassPrivateRoute = null,Object? bypassPrivateRouteAddress = null,Object? autoSetSystemDns = null,Object? dynamicBypassLocalNetwork = null,}) {
   return _then(_NetworkProps(
 systemProxy: null == systemProxy ? _self.systemProxy : systemProxy // ignore: cast_nullable_to_non_nullable
 as bool,bypassDomain: null == bypassDomain ? _self._bypassDomain : bypassDomain // ignore: cast_nullable_to_non_nullable
 as List<String>,bypassPrivateRoute: null == bypassPrivateRoute ? _self.bypassPrivateRoute : bypassPrivateRoute // ignore: cast_nullable_to_non_nullable
 as bool,bypassPrivateRouteAddress: null == bypassPrivateRouteAddress ? _self._bypassPrivateRouteAddress : bypassPrivateRouteAddress // ignore: cast_nullable_to_non_nullable
 as List<String>,autoSetSystemDns: null == autoSetSystemDns ? _self.autoSetSystemDns : autoSetSystemDns // ignore: cast_nullable_to_non_nullable
+as bool,dynamicBypassLocalNetwork: null == dynamicBypassLocalNetwork ? _self.dynamicBypassLocalNetwork : dynamicBypassLocalNetwork // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

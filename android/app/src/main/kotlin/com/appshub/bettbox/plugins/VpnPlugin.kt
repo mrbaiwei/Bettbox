@@ -41,6 +41,7 @@ import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
+import java.net.Inet4Address
 import java.net.InetSocketAddress
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.ConcurrentHashMap
@@ -68,6 +69,7 @@ data object VpnPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
     private var quickResponseJob: Job? = null
     private var lastNetworkType: Int? = null
     private var lastDns = ""
+    private var lastLocalNetworkCidrs: Set<String> = emptySet()
 
     val networks: MutableSet<Network> = Collections.newSetFromMap(ConcurrentHashMap())
 
@@ -192,6 +194,10 @@ data object VpnPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
                 result.success(getLocalGateways())
             }
 
+            "getLocalNetworkCidrs" -> {
+                result.success(getLocalNetworkCidrs())
+            }
+
             "setSmartStopped" -> {
                 val value = call.argument<Boolean>("value") ?: false
                 GlobalState.isSmartStopped = value
@@ -286,6 +292,61 @@ data object VpnPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
         emptyList()
     }
 
+    fun getLocalNetworkCidrs(): List<String> = runCatching {
+        val cm = connectivity ?: return@runCatching emptyList()
+        getActivePhysicalNetworks().flatMap { network ->
+            val capabilities = cm.getNetworkCapabilities(network)
+            if (capabilities?.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) != true ||
+                capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN)
+            ) {
+                return@flatMap emptyList()
+            }
+            cm.getLinkProperties(network)?.linkAddresses
+                ?.mapNotNull { linkAddress ->
+                    val address = linkAddress.address as? Inet4Address
+                        ?: return@mapNotNull null
+                    val prefixLength = linkAddress.prefixLength
+                    if (address.isLoopbackAddress ||
+                        address.isAnyLocalAddress ||
+                        prefixLength !in 0..32
+                    ) {
+                        return@mapNotNull null
+                    }
+                    val bytes = address.address.copyOf()
+                    var remainingBits = prefixLength
+                    for (index in bytes.indices) {
+                        val mask = when {
+                            remainingBits >= 8 -> 0xFF
+                            remainingBits <= 0 -> 0
+                            else -> (0xFF shl (8 - remainingBits)) and 0xFF
+                        }
+                        bytes[index] = (bytes[index].toInt() and mask).toByte()
+                        remainingBits -= 8
+                    }
+                    "${bytes.joinToString(".") { (it.toInt() and 0xFF).toString() }}/$prefixLength"
+                }
+                ?: emptyList()
+        }.distinct().sorted()
+    }.getOrElse {
+        android.util.Log.e("VpnPlugin", "getLocalNetworkCidrs error: ${it.message}")
+        emptyList()
+    }
+
+    private fun notifyLocalNetworkChangedIfNeeded() {
+        val currentCidrs = getLocalNetworkCidrs().toSet()
+        val changed = synchronized(this) {
+            if (currentCidrs == lastLocalNetworkCidrs) {
+                false
+            } else {
+                lastLocalNetworkCidrs = currentCidrs
+                true
+            }
+        }
+        if (!changed) return
+        ServicePlugin.notifyLocalNetworkChanged()
+        invokeDart("localNetworkChanged")
+    }
+
     fun handleStart(options: VpnOptions): Boolean {
         onUpdateNetwork()
         if (options.enable != this.options?.enable) {
@@ -349,6 +410,7 @@ data object VpnPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
         override fun onAvailable(network: Network) {
             networks.add(network)
             handleNetworkChange()
+            notifyLocalNetworkChangedIfNeeded()
             invokeDart("networkChanged")
         }
 
@@ -357,6 +419,7 @@ data object VpnPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
             networkDnsMap.remove(network)
             onUpdateNetwork()
             handleNetworkChange()
+            notifyLocalNetworkChangedIfNeeded()
             invokeDart("networkChanged")
         }
 
@@ -364,6 +427,7 @@ data object VpnPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
             val dnsList = linkProperties.dnsServers.map { it.asSocketAddressText(53) }
             networkDnsMap[network] = dnsList
             onUpdateNetwork()
+            notifyLocalNetworkChangedIfNeeded()
         }
     }
 
@@ -377,6 +441,7 @@ data object VpnPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
         if (!networkCallbackRegistered.compareAndSet(false, true)) return
         runCatching {
             networks.clear()
+            synchronized(this) { lastLocalNetworkCidrs = emptySet() }
             connectivity?.registerNetworkCallback(request, callback)
         }.onFailure {
             networkCallbackRegistered.set(false)
@@ -393,6 +458,7 @@ data object VpnPlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
         }.also {
             networks.clear()
             networkDnsMap.clear()
+            synchronized(this) { lastLocalNetworkCidrs = emptySet() }
             onUpdateNetwork()
         }
     }

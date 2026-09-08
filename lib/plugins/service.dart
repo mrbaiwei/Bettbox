@@ -7,7 +7,8 @@ import 'package:flutter/services.dart';
 
 import '../clash/lib.dart';
 
-typedef NativeEventCallback = Future<void> Function(String method, dynamic arguments);
+typedef NativeEventCallback =
+    Future<void> Function(String method, dynamic arguments);
 
 class Service {
   static final Service _instance = Service._internal();
@@ -80,8 +81,13 @@ class Service {
   }
 
   Future<List<String>> getLocalGateways() async {
+    return await methodChannel.invokeListMethod<String>('getLocalGateways') ??
+        const [];
+  }
+
+  Future<List<String>> getLocalNetworkCidrs() async {
     return await methodChannel.invokeListMethod<String>(
-          'getLocalGateways',
+          'getLocalNetworkCidrs',
         ) ??
         const [];
   }
@@ -93,14 +99,18 @@ class Service {
   }
 
   Future<bool> isServiceEngineRunning() async {
-    return await methodChannel.invokeMethod<bool>('isServiceEngineRunning') ?? false;
+    return await methodChannel.invokeMethod<bool>('isServiceEngineRunning') ??
+        false;
   }
 
   Future<bool> getStatus() async {
     return await methodChannel.invokeMethod<bool>('status') ?? false;
   }
 
-  Future<void> updateNotificationSpeed(String profileName, String speedInfo) async {
+  Future<void> updateNotificationSpeed(
+    String profileName,
+    String speedInfo,
+  ) async {
     await methodChannel.invokeMethod<void>('updateNotificationSpeed', {
       'profileName': profileName,
       'speedInfo': speedInfo,
@@ -112,12 +122,14 @@ class Service {
   }
 
   Future<bool?> setHighPriorityNotification(bool enabled) async {
-    return await methodChannel.invokeMethod<bool>('setHighPriorityNotification', {
-      'enabled': enabled,
-    });
+    return await methodChannel.invokeMethod<bool>(
+      'setHighPriorityNotification',
+      {'enabled': enabled},
+    );
   }
 
-  Future<bool?> reconnectIpc() => methodChannel.invokeMethod<bool>('reconnectIpc');
+  Future<bool?> reconnectIpc() =>
+      methodChannel.invokeMethod<bool>('reconnectIpc');
 }
 
 Service? get service =>

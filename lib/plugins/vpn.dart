@@ -12,6 +12,8 @@ abstract mixin class VpnListener {
   void onScreenStateChanged(bool isOn) {}
 
   void onNetworkChanged() {}
+
+  void onLocalNetworkChanged() {}
 }
 
 class Vpn {
@@ -46,6 +48,11 @@ class Vpn {
             listener.onNetworkChanged();
           }
           break;
+        case 'localNetworkChanged':
+          for (final listener in _listeners) {
+            listener.onLocalNetworkChanged();
+          }
+          break;
         default:
       }
     });
@@ -71,8 +78,13 @@ class Vpn {
   }
 
   Future<List<String>> getLocalGateways() async {
+    return await methodChannel.invokeListMethod<String>('getLocalGateways') ??
+        const [];
+  }
+
+  Future<List<String>> getLocalNetworkCidrs() async {
     return await methodChannel.invokeListMethod<String>(
-          'getLocalGateways',
+          'getLocalNetworkCidrs',
         ) ??
         const [];
   }

@@ -397,6 +397,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "dozeSuspendDesc": MessageLookupByLibrary.simpleMessage(
       "همگام‌سازی با حالت خواب سیستم (Doze)",
     ),
+    "dynamicBypassLocalNetwork": MessageLookupByLibrary.simpleMessage(
+      "دور زدن پویای شبکه محلی",
+    ),
+    "dynamicBypassLocalNetworkDesc": MessageLookupByLibrary.simpleMessage(
+      "هنگام تغییر شبکه، شبکه محلی را به‌صورت پویا به قوانین اتصال مستقیم اضافه می‌کند",
+    ),
     "edit": MessageLookupByLibrary.simpleMessage("ویرایش"),
     "editTunnel": MessageLookupByLibrary.simpleMessage("ویرایش هدایت"),
     "emptyTip": m3,

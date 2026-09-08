@@ -32,6 +32,7 @@ class ServicePlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
         }
 
         fun notifyNetworkChanged() = notify("networkChanged")
+        fun notifyLocalNetworkChanged() = notify("localNetworkChanged")
         fun notifyQuickResponse() = notify("quickResponse")
         fun notifyVpnStartFailed() = notify("vpnStartFailed")
         fun notifyRunStateChanged(state: RunState) {
@@ -80,6 +81,7 @@ class ServicePlugin : FlutterPlugin, MethodChannel.MethodCallHandler {
             "isSmartStopped" -> result.success(GlobalState.isSmartStopped)
             "getLocalIpAddresses" -> result.success(VpnPlugin.getLocalIpAddresses())
             "getLocalGateways" -> result.success(VpnPlugin.getLocalGateways())
+            "getLocalNetworkCidrs" -> result.success(VpnPlugin.getLocalNetworkCidrs())
             "setQuickResponse" -> {
                 VpnPlugin.setQuickResponse(call.argument<Boolean>("enabled") ?: false)
                 result.success(true)

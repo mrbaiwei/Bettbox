@@ -1969,6 +1969,26 @@ class AppLocalizations {
     );
   }
 
+  /// `Dynamic Local Network Bypass`
+  String get dynamicBypassLocalNetwork {
+    return Intl.message(
+      'Dynamic Local Network Bypass',
+      name: 'dynamicBypassLocalNetwork',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Dynamically add the local network to DIRECT rules when the network changes`
+  String get dynamicBypassLocalNetworkDesc {
+    return Intl.message(
+      'Dynamically add the local network to DIRECT rules when the network changes',
+      name: 'dynamicBypassLocalNetworkDesc',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `External Controller`
   String get externalController {
     return Intl.message(

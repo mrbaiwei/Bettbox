@@ -235,6 +235,8 @@
   "replaceAll": "全部替換",
   "allowBypass": "允許繞過 VPN",
   "allowBypassDesc": "開啟後部分應用可繞過 VPN",
+  "dynamicBypassLocalNetwork": "動態繞過本地網路",
+  "dynamicBypassLocalNetworkDesc": "網路變更時動態將本地網路加入直連規則",
   "externalController": "外部控制",
   "externalControllerDesc": "透過線上連接埠控制內核",
   "controlSecret": "控制密碼",

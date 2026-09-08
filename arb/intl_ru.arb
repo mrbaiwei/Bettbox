@@ -235,6 +235,8 @@
   "replaceAll": "Заменить все",
   "allowBypass": "Разрешить обход VPN",
   "allowBypassDesc": "Некоторые приложения смогут обходить VPN",
+  "dynamicBypassLocalNetwork": "Динамический обход локальной сети",
+  "dynamicBypassLocalNetworkDesc": "Динамически добавлять локальную сеть в правила прямого подключения при изменении сети",
   "externalController": "Внешнее управление",
   "externalControllerDesc": "Управление ядром через REST API",
   "controlSecret": "Пароль управления",

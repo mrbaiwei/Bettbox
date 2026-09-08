@@ -10,6 +10,7 @@ import 'package:bett_box/enum/enum.dart';
 import 'package:bett_box/l10n/l10n.dart';
 import 'package:bett_box/plugins/app.dart';
 import 'package:bett_box/plugins/service.dart';
+import 'package:bett_box/plugins/vpn.dart';
 import 'package:bett_box/providers/providers.dart';
 import 'package:bett_box/providers/state.dart' as providers_state;
 
@@ -1017,6 +1018,23 @@ class GlobalState {
       }
     }
 
+    if (system.isAndroid && config.networkProps.dynamicBypassLocalNetwork) {
+      final localNetworkCidrs = await switch (isService) {
+        true => vpn?.getLocalNetworkCidrs(),
+        false => service?.getLocalNetworkCidrs(),
+      };
+      final dynamicRules = (localNetworkCidrs ?? const <String>[])
+          .toSet()
+          .map((cidr) => 'IP-CIDR,$cidr,DIRECT')
+          .toList();
+      if (dynamicRules.isNotEmpty) {
+        rules = [
+          ...dynamicRules,
+          ...rules.where((rule) => !dynamicRules.contains(rule)),
+        ];
+      }
+    }
+
     rawConfig.remove('rule');
     rawConfig['rules'] = rules;
     return rawConfig;
@@ -1222,10 +1240,7 @@ class DetectionState {
     if (!appState.isInit) return;
 
     if (showLoading || state.value.ipInfo == null) {
-      state.value = state.value.copyWith(
-        isLoading: true,
-        errorMessage: null,
-      );
+      state.value = state.value.copyWith(isLoading: true, errorMessage: null);
     }
 
     final delay = immediate
@@ -1283,8 +1298,8 @@ class DetectionState {
       errorMessage: _rawIpInfo != null
           ? null
           : (state.value.ipInfo == null
-              ? appLocalizations.tryManualRefresh
-              : null),
+                ? appLocalizations.tryManualRefresh
+                : null),
     );
   }
 

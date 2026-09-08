@@ -235,6 +235,8 @@
   "replaceAll": "Replace All",
   "allowBypass": "Allow Bypassing VPN",
   "allowBypassDesc": "Allow specific apps to bypass VPN",
+  "dynamicBypassLocalNetwork": "Dynamic Local Network Bypass",
+  "dynamicBypassLocalNetworkDesc": "Dynamically add the local network to DIRECT rules when the network changes",
   "externalController": "External Controller",
   "externalControllerDesc": "Control core via online port",
   "controlSecret": "Control Secret",

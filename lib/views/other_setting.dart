@@ -3,12 +3,40 @@ import 'package:bett_box/common/network_matcher.dart';
 import 'package:bett_box/enum/enum.dart';
 import 'package:bett_box/plugins/app.dart';
 import 'package:bett_box/plugins/service.dart';
-import 'package:bett_box/providers/config.dart';
 import 'package:bett_box/providers/providers.dart';
 import 'package:bett_box/state.dart';
 import 'package:bett_box/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+class DynamicBypassLocalNetworkItem extends ConsumerWidget {
+  const DynamicBypassLocalNetworkItem({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final enabled = ref.watch(
+      networkSettingProvider.select((state) => state.dynamicBypassLocalNetwork),
+    );
+    return ListItem.switchItem(
+      title: Text(appLocalizations.dynamicBypassLocalNetwork),
+      subtitle: Text(appLocalizations.dynamicBypassLocalNetworkDesc),
+      delegate: SwitchDelegate(
+        value: enabled,
+        onChanged: (value) async {
+          ref
+              .read(networkSettingProvider.notifier)
+              .updateState(
+                (state) => state.copyWith(dynamicBypassLocalNetwork: value),
+              );
+          await globalState.appController.savePreferences();
+          if (ref.read(runTimeProvider) != null) {
+            await globalState.appController.setupClashConfig();
+          }
+        },
+      ),
+    );
+  }
+}
 
 class SmartAutoStopSection extends ConsumerWidget {
   const SmartAutoStopSection({super.key});
@@ -762,6 +790,7 @@ class OtherSettingView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     List<Widget> items = [
       const SmartAutoStopSection(),
+      if (system.isAndroid) const DynamicBypassLocalNetworkItem(),
       if (system.isAndroid) const DozeSuspendItem(),
       if (system.isAndroid) const QuickResponseItem(),
       const StoreFixItem(),

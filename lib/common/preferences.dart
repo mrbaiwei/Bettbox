@@ -12,7 +12,8 @@ class Preferences {
   static Preferences? _instance;
   Completer<SharedPreferences?> sharedPreferencesCompleter = Completer();
 
-  Future<bool> get isInit async => await sharedPreferencesCompleter.future != null;
+  Future<bool> get isInit async =>
+      await sharedPreferencesCompleter.future != null;
 
   Preferences._internal() {
     SharedPreferences.getInstance()
@@ -33,13 +34,18 @@ class Preferences {
       final clashConfigMap = json.decode(clashConfigString);
       return ClashConfig.fromJson(clashConfigMap);
     } catch (e, stackTrace) {
-      commonPrint.log('Failed to parse clash config from preferences: $e\n$stackTrace');
+      commonPrint.log(
+        'Failed to parse clash config from preferences: $e\n$stackTrace',
+      );
       return null;
     }
   }
 
-  Future<Config?> getConfig() async {
+  Future<Config?> getConfig({bool reload = false}) async {
     final preferences = await sharedPreferencesCompleter.future;
+    if (reload) {
+      await preferences?.reload();
+    }
     final configString = preferences?.getString(configKey);
     if (configString == null) return null;
     try {
@@ -52,16 +58,18 @@ class Preferences {
 
       return config;
     } catch (e, stackTrace) {
-      commonPrint.log('Failed to parse config from preferences: $e\n$stackTrace');
+      commonPrint.log(
+        'Failed to parse config from preferences: $e\n$stackTrace',
+      );
       return null;
     }
   }
 
   Future<bool> saveConfig(Config config) async {
     final preferences = await sharedPreferencesCompleter.future;
-    
+
     await preferences?.setBool('autoLaunch', config.appSetting.autoLaunch);
-    
+
     return await preferences?.setString(configKey, json.encode(config)) ??
         false;
   }
